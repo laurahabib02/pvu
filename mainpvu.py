@@ -50,6 +50,9 @@ elbow_motor.run_time(-30, 1000)
 elbow_motor.run(40)
 while elbow_sensor.reflection() < 32:
     wait(10)
+elbow_motor.reset_angle(0)
+elbow_motor.run_angle(60, 20, then=Stop.HOLD, wait=True)
+elbow_motor.hold()
 
 
 # Initialize the base. First rotate it until the Touch Sensor
