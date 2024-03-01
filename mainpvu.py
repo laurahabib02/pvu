@@ -39,7 +39,7 @@ base_switch = TouchSensor(Port.S1)
 # Set up the Color Sensor. This sensor detects when the elbow
 # is in the starting position. This is when the sensor sees the
 # white beam up close.
-elbow_sensor = ColorSensor(Port.S3)
+elbow_sensor = ColorSensor(Port.S2)
 
 # Initialize the elbow. First make it go down for one second.
 # Then make it go upwards slowly (15 degrees per second) until
