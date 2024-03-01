@@ -79,11 +79,11 @@ def robot_pick(position):
     # Rotate to the pick-up position.
     base_motor.run_target(60, position)
     # Lower the arm.
-    elbow_motor.run_target(60, -90)
+    elbow_motor.run_target(60, -40)
     # Close the gripper to grab the wheel stack.
     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
     # Raise the arm to lift the wheel stack.
-    elbow_motor.run_target(60, 45)
+    elbow_motor.run_target(60, 0)
 
 
 def robot_release(position):
@@ -94,11 +94,11 @@ def robot_release(position):
     # Rotate to the drop-off position.
     base_motor.run_target(60, position)
     # Lower the arm to put the wheel stack on the ground.
-    elbow_motor.run_target(60, 0)
+    elbow_motor.run_target(60, -40)
     # Open the gripper to release the wheel stack.
-    gripper_motor.run_target(200, 0)
+    gripper_motor.run_target(200, -90)
     # Raise the arm.
-    elbow_motor.run_target(60, 90)
+    elbow_motor.run_target(60, 0)
 
 
 # Play three beeps to indicate that the initialization is complete.
