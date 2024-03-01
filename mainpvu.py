@@ -77,7 +77,7 @@ def robot_pick(position):
     # raises the elbow to pick up the object.
 
     # Rotate to the pick-up position.
-    base_motor.run_target(60, position)
+    base_motor.run_target(60, position) #vår indicated position äär right 90 grader
     # Lower the arm.
     elbow_motor.run_target(60, -40)
     # Close the gripper to grab the wheel stack.
