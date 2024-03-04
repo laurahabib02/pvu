@@ -81,11 +81,11 @@ def robot_pick(position):
     # Rotate to the pick-up position.
     base_motor.run_target(60, position) #vår indicated position är right 90 grader
     # Lower the arm.
-    elbow_motor.run_target(60, -40)
+    elbow_motor.run_target(60, -40) # armen sänks lite här
     # Close the gripper to grab the wheel stack.
     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
     # Raise the arm to lift the wheel stack.
-    elbow_motor.run_target(60, 0)
+    elbow_motor.run_target(60, 30) # den lyfter EXTREMT lite om ens något
 
 
 def robot_release(position):
@@ -121,6 +121,9 @@ RIGHT = 40
 #
 # Now we have a wheel stack on the left and on the right as before, but they
 # have switched places. Then the loop repeats to do this over and over.
+
+
+
 while True:
     # Move a wheel stack from the left to the middle.
     robot_pick(LEFT)
@@ -133,6 +136,8 @@ while True:
     # Move a wheel stack from the middle to the right.
     robot_pick(MIDDLE)
     robot_release(RIGHT)
+
+  
 
 
 # Konfigurera motorer för hjul
