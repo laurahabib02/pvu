@@ -54,7 +54,7 @@ elbow_motor.reset_angle(0)
 elbow_motor.run_angle(60, 20, then=Stop.HOLD, wait=True)
 elbow_motor.hold()
 
-position = 90
+position = 40
 # Initialize the base. First rotate it until the Touch Sensor
 # in the base is pressed. Reset the motor angle to make this
 # the zero point. Then hold the motor in place so it does not move.
