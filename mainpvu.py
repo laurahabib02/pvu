@@ -7,7 +7,7 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-
+#amna
 # Create your objects here. Detta för att styra huvudenheten
 ev3 = EV3Brick()
 
