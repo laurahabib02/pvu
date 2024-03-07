@@ -47,7 +47,7 @@ elbow_sensor = ColorSensor(Port.S2)
 # angle to make this the zero point. Finally, hold the motor
 # in place so it does not move.
 elbow_motor.run_time(-30, 1000)
-elbow_motor.run(40)
+elbow_motor.run(15)
 while elbow_sensor.reflection() < 32:
     wait(10)
 elbow_motor.reset_angle(0)
@@ -85,7 +85,7 @@ def robot_pick(position):
     # Close the gripper to grab the wheel stack.
     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
     # Raise the arm to lift the wheel stack.
-    elbow_motor.run_target(60, 30) # den lyfter EXTREMT lite om ens något
+    elbow_motor.run_target(60, 30) # den lyfter EXTREMT lite om ens något, x borde vara grader och y hastighet, hur tillämpas hastigheten?
 
 
 def robot_release(position):
@@ -98,7 +98,7 @@ def robot_release(position):
     # Lower the arm to put the wheel stack on the ground.
     elbow_motor.run_target(60, -40)
     # Open the gripper to release the wheel stack.
-    gripper_motor.run_target(200, -90)
+    gripper_motor.run_target(200, -90) # ändra inte -90 eftersom det innebär öppen claw
     # Raise the arm.
     elbow_motor.run_target(60, 0)
 
