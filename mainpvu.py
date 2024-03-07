@@ -1,22 +1,23 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                             	InfraredSensor, UltrasonicSensor, GyroSensor)
+                               InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 
-# This program requires LEGO EV3 MicroPython v2.0 or higher.
-# Click "Open user guide" on the EV3 extension tab for more information.
+
 
 
 # Create your objects here. Detta för att styra huvudenheten
 ev3 = EV3Brick()
 
+
 # Configure the gripper motor on Port A with default settings.
 gripper_motor = Motor(Port.A)
+
 
 # Configure the elbow motor. It has an 8-teeth and a 40-teeth gear
 # connected to it. We would like positive speed values to make the
@@ -24,25 +25,30 @@ gripper_motor = Motor(Port.A)
 # of the motor.
 elbow_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE, [8, 40])
 
+
 # Configure the motor that rotates the base. It has a 12-teeth and a
 # 36-teeth gear connected to it. We would like positive speed values
 # to make the arm go away from the Touch Sensor. This corresponds
 # to counterclockwise rotation of the motor.
 base_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE, [12, 36])
 
+
 # Limit the elbow and base accelerations. This results in
 # very smooth motion. Like an industrial robot.
 elbow_motor.control.limits(speed=60, acceleration=120)
 base_motor.control.limits(speed=60, acceleration=120)
 
+
 # Set up the Touch Sensor. It acts as an end-switch in the base
 # of the robot arm. It defines the starting point of the base.
 base_switch = TouchSensor(Port.S1)
+
 
 # Set up the Color Sensor. This sensor detects when the elbow
 # is in the starting position. This is when the sensor sees the
 # white beam up close.
 elbow_sensor = ColorSensor(Port.S2)
+
 
 # Initialize the elbow. First make it go down for one second.
 # Then make it go upwards slowly (15 degrees per second) until
@@ -52,10 +58,12 @@ elbow_sensor = ColorSensor(Port.S2)
 elbow_motor.run_time(-30, 1000)
 elbow_motor.run(15)
 while elbow_sensor.reflection() < 32:
-    wait(10)
+   wait(10)
 elbow_motor.reset_angle(0)
 elbow_motor.run_angle(60, 20, then=Stop.HOLD, wait=True)
 elbow_motor.hold()
+
+
 
 
 # Initialize the base. First rotate it until the Touch Sensor
@@ -63,9 +71,10 @@ elbow_motor.hold()
 # the zero point. Then hold the motor in place so it does not move.
 base_motor.run(-60)
 while not base_switch.pressed():
-    wait(10)
+   wait(10)
 base_motor.reset_angle(0)
 base_motor.hold()
+
 
 # Initialize the gripper. First rotate the motor until it stalls.
 # Stalling means that it cannot move any further. This position
@@ -76,45 +85,55 @@ gripper_motor.reset_angle(0)
 gripper_motor.run_target(200, -90)
 
 
-def robot_pick(position):
-    # This function makes the robot base rotate to the indicated
-    # position. There it lowers the elbow, closes the gripper, and
-    # raises the elbow to pick up the object.
 
-    # Rotate to the pick-up position.
-    base_motor.run_target(60, position) #vår indicated position är right 90 grader
-    # Lower the arm.
-    elbow_motor.run_target(60, -40) # armen sänks lite här
-    # Close the gripper to grab the wheel stack.
-    gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
-    # Raise the arm to lift the wheel stack.
-    elbow_motor.run_target(60, 30) # den lyfter EXTREMT lite om ens något, x borde vara grader och y hastighet, hur tillämpas hastigheten?
+
+def robot_pick(position):
+   # This function makes the robot base rotate to the indicated
+   # position. There it lowers the elbow, closes the gripper, and
+   # raises the elbow to pick up the object.
+
+
+   # Rotate to the pick-up position.
+   base_motor.run_target(60, position) #vår indicated position är right 90 grader
+   # Lower the arm.
+   elbow_motor.run_target(60, -40) # armen sänks lite här
+   # Close the gripper to grab the wheel stack.
+   gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
+   # Raise the arm to lift the wheel stack.
+   elbow_motor.run_target(60, 30) # den lyfter EXTREMT lite om ens något, x borde vara grader och y hastighet, hur tillämpas hastigheten?
+
+
 
 
 def robot_release(position):
-    # This function makes the robot base rotate to the indicated
-    # position. There it lowers the elbow, opens the gripper to
-    # release the object. Then it raises its arm again.
+   # This function makes the robot base rotate to the indicated
+   # position. There it lowers the elbow, opens the gripper to
+   # release the object. Then it raises its arm again.
 
-    # Rotate to the drop-off position.
-    base_motor.run_target(60, position)
-    # Lower the arm to put the wheel stack on the ground.
-    elbow_motor.run_target(60, -40)
-    # Open the gripper to release the wheel stack.
-    gripper_motor.run_target(200, -90) # ändra inte -90 eftersom det innebär öppen claw
-    # Raise the arm.
-    elbow_motor.run_target(60, 0)
+
+   # Rotate to the drop-off position.
+   base_motor.run_target(60, position)
+   # Lower the arm to put the wheel stack on the ground.
+   elbow_motor.run_target(60, -40)
+   # Open the gripper to release the wheel stack.
+   gripper_motor.run_target(200, -90) # ändra inte -90 eftersom det innebär öppen claw
+   # Raise the arm.
+   elbow_motor.run_target(60, 0)
+
+
 
 
 # Play three beeps to indicate that the initialization is complete.
 for i in range(3):
-    ev3.speaker.beep()
-    wait(100)
+   ev3.speaker.beep()
+   wait(100)
+
 
 # Define the three destinations for picking up and moving the wheel stacks.
 LEFT = 160
 MIDDLE = 100
 RIGHT = 40
+
 
 # This is the main part of the program. It is a loop that repeats endlessly.
 #
@@ -127,20 +146,26 @@ RIGHT = 40
 
 
 
+
+
+
 while True:
-    # Move a wheel stack from the left to the middle.
-    robot_pick(LEFT)
-    robot_release(MIDDLE)
+   # Move a wheel stack from the left to the middle.
+   robot_pick(LEFT)
+   robot_release(MIDDLE)
 
-    # Move a wheel stack from the right to the left.
-    robot_pick(RIGHT)
-    robot_release(LEFT)
 
-    # Move a wheel stack from the middle to the right.
-    robot_pick(MIDDLE)
-    robot_release(RIGHT)
+   # Move a wheel stack from the right to the left.
+   robot_pick(RIGHT)
+   robot_release(LEFT)
 
-  
+
+   # Move a wheel stack from the middle to the right.
+   robot_pick(MIDDLE)
+   robot_release(RIGHT)
+
+
+
 
 
 # Konfigurera motorer för hjul
