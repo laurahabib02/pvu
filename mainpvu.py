@@ -8,9 +8,6 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 
-
-
-
 # Create your objects here. Detta för att styra huvudenheten
 ev3 = EV3Brick()
 
@@ -60,10 +57,7 @@ elbow_motor.run(15)
 while elbow_sensor.reflection() < 32:
    wait(10)
 elbow_motor.reset_angle(0)
-elbow_motor.run_angle(60, 20, then=Stop.HOLD, wait=True)
 elbow_motor.hold()
-
-
 
 
 # Initialize the base. First rotate it until the Touch Sensor
@@ -100,7 +94,7 @@ def robot_pick(position):
    # Close the gripper to grab the wheel stack.
    gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
    # Raise the arm to lift the wheel stack.
-   elbow_motor.run_target(60, 30) # den lyfter EXTREMT lite om ens något, x borde vara grader och y hastighet, hur tillämpas hastigheten?
+   elbow_motor.run_target(60, 0) # den lyfter EXTREMT lite om ens något, x borde vara grader och y hastighet, hur tillämpas hastigheten?
 
 
 
