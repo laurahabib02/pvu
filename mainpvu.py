@@ -42,3 +42,13 @@ def elbow_down():
 
 elbow_up()
 elbow_down()
+
+gripper_motor = Motor(Port.A)
+
+elbow_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE, [8, 40])
+
+base_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE, [12, 36])
+
+touch_sensor = TouchSensor(Port.S1)
+
+color_sensor = ColorSensor(Port.S2)
