@@ -29,5 +29,14 @@ def open_grip():
 
 
 # Steg 3: Lyfta på armen
+def elbowup():
+    ev3.screen.print("ELBOW UP")
+    elbow_motor.run_until_stalled(50, then=Stop.HOLD, duty_limit=50)
+    elbow_motor.reset_angle(90) 
+
+
+def elbowdown():
+    ev3.screen.print("ELBOW DOWN")
+    elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
 
 
