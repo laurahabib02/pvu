@@ -36,7 +36,6 @@ open_grip()
 close_grip()
 
 def closegrip():  
-    ev3.screen.print("CLOSE GRIP")
     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
      
 
