@@ -30,3 +30,7 @@ def open_grip():
     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
     gripper_motor.reset_angle(0) 
     gripper_motor.run_target(200, -90)
+
+
+
+
