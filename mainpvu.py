@@ -34,3 +34,15 @@ def close_grip():
 # Huvudprogram
 open_grip()
 close_grip()
+
+def closegrip():  
+    ev3.screen.print("CLOSE GRIP")
+    gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
+     
+
+
+def opengrip():
+    ev3.screen.print("OPEN GRIP")
+    gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
+    gripper_motor.reset_angle(0) 
+    gripper_motor.run_target(200, -90)
