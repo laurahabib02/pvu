@@ -10,11 +10,11 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 
 # Steg 1: öppna och stänga klon, requirement 1
 
-from ev3dev.ev3 import MediumMotor, TouchSensor, Sound
-import time
+# from ev3dev.ev3 import MediumMotor, TouchSensor, Sound
+# import time
 
 # Initiera motor och sensor
-grip_motor = MediumMotor('outA')  # Antag att greppmotorn är ansluten till port A
+grip_motor = Motor(Port.A)  # Antag att greppmotorn är ansluten till port A
 touch_sensor = TouchSensor()
 
 # Funktion för att öppna greppet
