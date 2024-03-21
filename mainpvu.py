@@ -49,33 +49,28 @@ def elbow_down():
 # Steg 4: 
 
 
-def setbaseposition():
-    ev3.screen.print("SETTING BASE POSITION...")
-    elbowup()
-    base_motor.run(-60)
+def base_position():
+    elbow_up()
+    base_motor.run(-90)
     while not touch_sensor.pressed():
         pass
     base_motor.stop()
     wait(1000)
     base_motor.reset_angle(0)
 
-    ev3.screen.print("BASE POSITION FOUND")
-
-
 def gotoendposition():
-    ev3.speaker.say("going back to start position")
-    elbowup()
+    elbow_up()
     gotoposition(38)
-    elbowdown()
+    elbow_down()
 
 
 def gotoposition(pos):
-    elbowup()
+    elbow_up()
     base_motor.run_target(60, pos)
 
 
 def pickupposition(pos):
-
-    elbowup()
+    elbow_up()
     base_motor.run_target(90, pos)
 
+gotoposition(pos)
