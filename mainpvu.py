@@ -14,7 +14,8 @@ left_motor = Motor(Port.B)
 right_motor = Motor(Port.C)
 gripper_motor = Motor(Port.A)
 touch_sensor = TouchSensor(Port.S1)
-color_sensort = ColorSensor(Port.S2)
+color_sensor = ColorSensor(Port.S2)
+
 
 # Steg 2: Öppna och stänga klon
 
@@ -29,14 +30,15 @@ def open_grip():
 
 
 # Steg 3: Lyfta på armen
-def elbowup():
-    ev3.screen.print("ELBOW UP")
+
+def elbow_up():
     elbow_motor.run_until_stalled(50, then=Stop.HOLD, duty_limit=50)
     elbow_motor.reset_angle(90) 
 
 
-def elbowdown():
-    ev3.screen.print("ELBOW DOWN")
+def elbow_down():
     elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
 
 
+elbow_up()
+elbow_down()
