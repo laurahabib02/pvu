@@ -8,3 +8,6 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 
+# Steg 1: öppna och stänga klon, requirement 1
+
+
