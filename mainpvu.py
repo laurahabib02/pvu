@@ -9,10 +9,16 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 
 
 # Steg 1: Definiera alla motorer och sensorer
+
 ev3 = EV3Brick()
 left_motor = Motor(Port.B)
 right_motor = Motor(Port.C)
 gripper_motor = Motor(Port.A)
+touch_sensor = TouchSensor(Port.S1)
+color_sensor = ColorSensor(Port.S2)
+gripper_motor = Motor(Port.A)
+elbow_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE, [8, 40])
+base_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE, [12, 36])
 touch_sensor = TouchSensor(Port.S1)
 color_sensor = ColorSensor(Port.S2)
 
@@ -29,7 +35,7 @@ def open_grip():
     gripper_motor.run_target(200, -90)
 
 
-# Steg 3: Lyfta på armen
+# Steg 3: Lyfta på armen upp och ner
 
 def elbow_up():
     elbow_motor.run_until_stalled(50, then=Stop.HOLD, duty_limit=50)
@@ -40,15 +46,6 @@ def elbow_down():
     elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
 
 
-elbow_up()
-elbow_down()
+# Steg 4: 
 
-gripper_motor = Motor(Port.A)
 
-elbow_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE, [8, 40])
-
-base_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE, [12, 36])
-
-touch_sensor = TouchSensor(Port.S1)
-
-color_sensor = ColorSensor(Port.S2)
