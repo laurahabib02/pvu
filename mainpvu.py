@@ -46,7 +46,16 @@ def elbow_down():
     elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
 
 
-# Steg 4: 
+# Steg 4: Hitta positionerna, base motor
+
+def find_base_position(): # hittar utgångsläget
+    elbow_up()
+    base_motor.run(-60)
+    while not touch_sensor.pressed():
+        pass
+    base_motor.stop()
+    wait(1000)
+    base_motor.reset_angle(0)
 
 
 def base_position():
@@ -73,4 +82,5 @@ def pickupposition(pos):
     elbow_up()
     base_motor.run_target(90, pos)
 
-gotoposition(pos)
+
+setbaseposition()
