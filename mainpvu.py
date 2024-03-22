@@ -63,19 +63,19 @@ def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig
         wait(100)
 
 
-def go_to_start_position(): # positionen som kan tänkas vara right
+def go_to_start_position(): # går och pick upp från positionen vi anger som position
     elbow_up()
     go_to_position(position) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
     elbow_down()
     close_grip()
 
 
-def go_to_position(pos):
+def go_to_position(pos): # tillkallas i andra funktioner
     elbow_up()
     base_motor.run_target(60, pos)
 
 
-def pickupposition(pos):
+def pickupposition(pos): # lite oklart
     elbow_up()
     base_motor.run_target(90, pos)
 
