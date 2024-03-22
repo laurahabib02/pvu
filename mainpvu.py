@@ -49,6 +49,7 @@ def elbow_down():
 # Steg 4: Hitta positionerna, base motor
 
 def find_base_position(): # hittar utgångsläget
+    open_grip()
     elbow_up()
     base_motor.run(-60)
     while not touch_sensor.pressed():
@@ -62,9 +63,9 @@ def find_base_position(): # hittar utgångsläget
         wait(100)
 
 
-def gotoendposition():
+def go_to_pickup():
     elbow_up()
-    gotoposition(38)
+    gotoposition(position) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
     elbow_down()
 
 
@@ -78,4 +79,9 @@ def pickupposition(pos):
     base_motor.run_target(90, pos)
 
 
+position = 45
+pos = 90
 find_base_position()
+gotoendposition()
+gotoposition(pos)
+
