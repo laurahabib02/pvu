@@ -63,13 +63,14 @@ def find_base_position(): # hittar utgångsläget
         wait(100)
 
 
-def go_to_pickup():
+def go_to_position_one():
     elbow_up()
-    gotoposition(position) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
+    go_to_position_two(45) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
     elbow_down()
+    close_grip()
 
 
-def gotoposition(pos):
+def go_to_position_two(pos):
     elbow_up()
     base_motor.run_target(60, pos)
 
@@ -79,9 +80,9 @@ def pickupposition(pos):
     base_motor.run_target(90, pos)
 
 
-position = 45
+
 pos = 90
 find_base_position()
-gotoendposition()
-gotoposition(pos)
-
+go_to_pickup()
+gotoposition
+pickupposition
