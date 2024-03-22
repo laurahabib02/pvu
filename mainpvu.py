@@ -48,7 +48,7 @@ def elbow_down():
 
 # Steg 4: Hitta positionerna, base motor
 
-def find_base_position(): # hittar utgångsläget
+def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig till detta
     open_grip()
     elbow_up()
     base_motor.run(-60)
@@ -63,14 +63,14 @@ def find_base_position(): # hittar utgångsläget
         wait(100)
 
 
-def go_to_position_one():
+def go_to_position(): # positionen som kan tänkas vara right
     elbow_up()
-    go_to_position_two(45) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
+    go_to_position(position) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
     elbow_down()
     close_grip()
 
 
-def go_to_position_two(pos):
+def go_to_position(pos):
     elbow_up()
     base_motor.run_target(60, pos)
 
@@ -81,8 +81,14 @@ def pickupposition(pos):
 
 
 
-pos = 90
-find_base_position()
-go_to_pickup()
-gotoposition
-pickupposition
+RIGHT = 45
+MIDDLE = 90
+LEFT = 135
+LEFT_LEFT = 180
+
+position = RIGHT
+go_to_base_position()
+go_to_position(position)
+position = LEFT
+go_to_position()
+go_to_base_position(position)
