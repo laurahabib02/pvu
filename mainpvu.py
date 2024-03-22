@@ -63,7 +63,7 @@ def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig
         wait(100)
 
 
-def go_to_position(): # positionen som kan tänkas vara right
+def go_to_start_position(): # positionen som kan tänkas vara right
     elbow_up()
     go_to_position(position) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
     elbow_down()
@@ -88,7 +88,7 @@ LEFT_LEFT = 180
 
 position = RIGHT
 go_to_base_position()
-go_to_position(position)
+go_to_start_position()
 position = LEFT
-go_to_position()
-go_to_base_position(position)
+go_to_start_position()
+go_to_base_position()
