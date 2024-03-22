@@ -56,16 +56,11 @@ def find_base_position(): # hittar utgångsläget
     base_motor.stop()
     wait(1000)
     base_motor.reset_angle(0)
+    elbow_down()
+    for i in range(3):
+        ev3.speaker.beep()
+        wait(100)
 
-
-def base_position():
-    elbow_up()
-    base_motor.run(-90)
-    while not touch_sensor.pressed():
-        pass
-    base_motor.stop()
-    wait(1000)
-    base_motor.reset_angle(0)
 
 def gotoendposition():
     elbow_up()
@@ -83,4 +78,4 @@ def pickupposition(pos):
     base_motor.run_target(90, pos)
 
 
-setbaseposition()
+find_base_position()
