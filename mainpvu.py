@@ -8,7 +8,7 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 
-# Steg 1: Definiera alla motorer och sensorer
+# Steg 1: Definiera alla motorer, sensorer och färger
 
 ev3 = EV3Brick()
 left_motor = Motor(Port.B)
@@ -21,7 +21,7 @@ elbow_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE, [8, 40])
 base_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE, [12, 36])
 touch_sensor = TouchSensor(Port.S1)
 color_sensor = ColorSensor(Port.S2)
-
+colors = [Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN]
 
 # Steg 2: Öppna och stänga klon
 
@@ -92,3 +92,34 @@ go_to_start_position()
 position = LEFT
 go_to_start_position()
 go_to_base_position()
+
+def checkcolor():
+    Colorfound = False
+    ev3.speaker.say("Will check color")
+    elbow_motor.reset_angle(0)
+    elbow_motor.run_target(50, 40)
+    wait(2000)
+
+    while Colorfound == False:
+        # Read the raw RGB values
+        measuredcolor = color_sensor.color()
+
+        if measuredcolor in colors:
+            if measuredcolor == Color.BLUE:
+                ev3.speaker.say("blue")
+                ev3.screen.print("BLUE COLOR")
+            elif measuredcolor == Color.RED:
+                ev3.speaker.say("red")
+                ev3.screen.print("RED COLOR")
+            elif measuredcolor == Color.GREEN:
+                ev3.speaker.say("green")
+                ev3.screen.print("GREEN COLOR")
+            elif measuredcolor == Color.YELLOW:
+                ev3.speaker.say("yellow")
+                ev3.screen.print("YELLOW COLOR")
+
+            Colorfound = True
+    return measuredcolor
+    ev3.speaker.beep()
+
+# Nästa gång: fixa med hur högt elbow åker samt fixa den funktionen längst ner med color sensor
