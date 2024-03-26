@@ -25,9 +25,11 @@ colors = [Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN]
 
 # Steg 2: Öppna och stänga klon
 
+
 def close_grip():  
     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
      
+
 
 def open_grip():
     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
@@ -122,4 +124,4 @@ def checkcolor():
     return measuredcolor
     ev3.speaker.beep()
 
-# Nästa gång: fixa med hur högt elbow åker samt fixa den funktionen längst ner med color sensor
+# check color funktionen har nog något som begränsar elbow up så att färgen läses av
