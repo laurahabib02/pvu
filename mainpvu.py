@@ -95,33 +95,34 @@ position = LEFT
 go_to_start_position()
 go_to_base_position()
 
-def checkcolor():
+def check_color():
     Colorfound = False
-    ev3.speaker.say("Will check color")
+    ev3.speaker.say("Checking color")
     elbow_motor.reset_angle(0)
     elbow_motor.run_target(50, 40)
     wait(2000)
 
     while Colorfound == False:
-        # Read the raw RGB values
         measuredcolor = color_sensor.color()
 
         if measuredcolor in colors:
             if measuredcolor == Color.BLUE:
                 ev3.speaker.say("blue")
-                ev3.screen.print("BLUE COLOR")
             elif measuredcolor == Color.RED:
                 ev3.speaker.say("red")
-                ev3.screen.print("RED COLOR")
             elif measuredcolor == Color.GREEN:
                 ev3.speaker.say("green")
-                ev3.screen.print("GREEN COLOR")
             elif measuredcolor == Color.YELLOW:
                 ev3.speaker.say("yellow")
-                ev3.screen.print("YELLOW COLOR")
 
             Colorfound = True
     return measuredcolor
     ev3.speaker.beep()
 
 # check color funktionen har nog något som begränsar elbow up så att färgen läses av
+
+elbow_down()
+open_grip()
+close_grip()
+check_color()
+elbow_down()
