@@ -88,21 +88,21 @@ MIDDLE = 90
 LEFT = 135
 LEFT_LEFT = 180
 
-position = RIGHT
-go_to_base_position()
-go_to_start_position()
-position = LEFT
-go_to_start_position()
-go_to_base_position()
+# position = RIGHT
+# go_to_base_position()
+# go_to_start_position()
+# position = LEFT
+# go_to_start_position()
+# go_to_base_position()
 
-def check_color():
+def check_color(): # i check_color så begränsas elbow så att färgen kan läsas av
     Colorfound = False
     ev3.speaker.say("Checking color")
     elbow_motor.reset_angle(0)
     elbow_motor.run_target(50, 40)
     wait(2000)
 
-    while Colorfound == False:
+    while Colorfound == False: # alla färger funkar sålänge den är nära nog
         measuredcolor = color_sensor.color()
 
         if measuredcolor in colors:
@@ -117,12 +117,24 @@ def check_color():
 
             Colorfound = True
     return measuredcolor
-    ev3.speaker.beep()
 
-# check color funktionen har nog något som begränsar elbow up så att färgen läses av
+  
 
-elbow_down()
-open_grip()
+
+
 close_grip()
 check_color()
 elbow_down()
+open_grip()
+elbow_up()
+
+
+def check_if_present(pos):
+    isblock = False
+    pickupposition(pos)
+    while isblock == False:
+        opengrip()
+        elbowdown()
+        closegrip()
+        isblock = check_angle()
+        elbowup()
