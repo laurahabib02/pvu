@@ -77,7 +77,7 @@ def go_to_position(pos): # tillkallas i andra funktioner
     base_motor.run_target(60, pos)
 
 
-def pickupposition(pos): # lite oklart
+def pickup_position(pos): # lite oklart
     elbow_up()
     base_motor.run_target(90, pos)
 
@@ -129,30 +129,30 @@ def check_color(): # i check_color så begränsas elbow så att färgen kan läs
 # elbow_up()
 
 def check_angle(): # denna behöver man inte kalla på eftersom den tillkallas i nästa funktion
-    isblock = False
+    present = False
     angle=(gripper_motor.angle())
     ev3.screen.print(str(angle))
 
     if angle<-20:
-        print("The motor is holding a block.")
+        ev3.speaker.say("The motor is holding a block.")
 
-        isblock = True
+        present = True
     
     else:
-        print("The motor is not holding a block.")
+        ev3.speaker.say("The motor is not holding a block.")
     wait(1000)
-    return isblock
+    return present
 
 def check_if_present(pos):
-    isblock = False
-    pickupposition(pos)
-    while isblock == False:
+    present = False   # kan man ändra isblock till något annat
+    pickup_position(pos)
+    while present == False:
         open_grip()
         elbow_down()
         close_grip()
-        isblock = check_angle()
+        present = check_angle()
         elbow_up()
 
 
-
+go_to_base_position()
 check_if_present(90)
