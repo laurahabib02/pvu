@@ -128,13 +128,27 @@ elbow_down()
 open_grip()
 elbow_up()
 
+def check_angle():
+    isblock = False
+    angle=(gripper_motor.angle())
+    ev3.screen.print(str(angle))
+
+    if angle<-20:
+        print("The motor is holding a block.")
+
+        isblock = True
+    
+    else:
+        print("The motor is not holding a block.")
+    wait(1000)
+    return isblock
 
 def check_if_present(pos):
     isblock = False
     pickupposition(pos)
     while isblock == False:
-        opengrip()
-        elbowdown()
-        closegrip()
+        open_grip()
+        elbow_down()
+        close_grip()
         isblock = check_angle()
-        elbowup()
+        elbow_up()
