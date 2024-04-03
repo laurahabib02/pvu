@@ -88,12 +88,12 @@ MIDDLE = 90
 LEFT = 135
 LEFT_LEFT = 180
 
-# position = RIGHT
-# go_to_base_position()
-# go_to_start_position()
-# position = LEFT
-# go_to_start_position()
-# go_to_base_position()
+position = RIGHT
+go_to_base_position()
+go_to_start_position()
+position = LEFT
+go_to_start_position()
+go_to_base_position()
 
 def check_color(): # i check_color så begränsas elbow så att färgen kan läsas av
     Colorfound = False
@@ -128,31 +128,3 @@ def check_color(): # i check_color så begränsas elbow så att färgen kan läs
 # open_grip()
 # elbow_up()
 
-def check_angle(): # denna behöver man inte kalla på eftersom den tillkallas i nästa funktion
-    present = False
-    angle=(gripper_motor.angle())
-    ev3.screen.print(str(angle))
-
-    if angle<-20:
-        ev3.speaker.say("The motor is holding a block.")
-
-        present = True
-    
-    else:
-        ev3.speaker.say("The motor is not holding a block.")
-    wait(1000)
-    return present
-
-def check_if_present(pos):
-    present = False   # kan man ändra isblock till något annat
-    pickup_position(pos)
-    while present == False:
-        open_grip()
-        elbow_down()
-        close_grip()
-        present = check_angle()
-        elbow_up()
-
-
-go_to_base_position()
-check_if_present(90)
