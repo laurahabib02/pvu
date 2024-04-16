@@ -128,3 +128,37 @@ def check_color(): # i check_color så begränsas elbow så att färgen kan läs
 # open_grip()
 # elbow_up()
 
+
+def check_angle(): # denna behöver man inte kalla på eftersom den tillkallas i nästa funktion
+   present = False
+   angle=(gripper_motor.angle())
+   ev3.screen.print(str(angle))
+
+
+   if angle<-20:
+       ev3.speaker.say("The motor is holding a block.")
+
+
+       present = True
+  
+   else:
+       ev3.speaker.say("The motor is not holding a block.")
+   wait(1000)
+   return present
+
+
+def check_if_present(pos):
+   present = False   
+   pickup_position(pos)
+   while present == False:
+       open_grip()
+       elbow_down()
+       close_grip()
+       present = check_angle()
+       elbow_up()
+
+
+
+
+go_to_base_position()
+check_if_present(90)
