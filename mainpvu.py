@@ -149,6 +149,20 @@ def checking_if_present(pos):
        present = checking_angles()
        elbow_up()
 
+def pick_up(pos,cc):
+    ev3.screen.print("PICK UP")
+
+    pickup_position(pos) 
+
+    open_grip()
+    elbow_down()
+    close_grip()
+    if cc is True:
+        color = check_color()
+    elbow_up()
+    ev3.speaker.beep()
+    if cc is True:
+        return color
 
 def startup(): # används i elevated
     ev3.speaker.say("Start")
@@ -212,11 +226,11 @@ def run():
     dropcolorspecial=False
     checkangle=False
     startup()
-    mycolor = pickup(positions[3], checkcolor)
+    mycolor = pick_up(positions[3], checkcolor)
     if checkangle == True:
-        isblock = check_angle()
+        isblock = checking_angles()
         if isblock == False:
-            ev3.speaker.say("There is no FUCKING block")
+            ev3.speaker.say("There is no block")
             finished()
             return
     dropoff(positions[0], mycolor, dropcolorspecial)
@@ -238,7 +252,7 @@ def run_until_block():
     checkangle=True
     mycolor = []
     startup()
-    check_if_present(positions[2])
+    checking_if_present(positions[2])
     dropoff(positions[0], mycolor, dropcolorspecial)
     finished()
 
@@ -250,7 +264,7 @@ def runtest():
     checkangle=False
     startup()
 
-    mycolor = pickup(positions[3], checkcolor)
+    mycolor = pick_up(positions[3], checkcolor)
 
     elevated_dropoff(positions[2], 0)
 
