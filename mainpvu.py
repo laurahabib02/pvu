@@ -19,9 +19,8 @@ def variables():
     dropcolorspecial=False
     checkangle=True
     mycolor = []
-    
-elbow_motor.control.limits(speed=120, acceleration=120)
-base_motor.control.limits(speed=120, acceleration=120)
+
+
 
 # Steg 1: Definiera alla motorer, sensorer och färger
 
@@ -37,6 +36,9 @@ base_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE, [12, 36])
 touch_sensor = TouchSensor(Port.S1)
 color_sensor = ColorSensor(Port.S2)
 colors = [Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN]
+
+elbow_motor.control.limits(speed=120, acceleration=120)
+base_motor.control.limits(speed=120, acceleration=120)
 
 # Steg 2: Öppna och stänga klon
 
@@ -95,15 +97,6 @@ def pickup_position(pos): # lite oklart
     base_motor.run_target(90, pos)
 
 
-
-
-# position = RIGHT
-# go_to_base_position()
-# go_to_start_position()
-# position = LEFT
-# go_to_start_position()
-# go_to_base_position()
-
 def check_color(): # i check_color så begränsas elbow så att färgen kan läsas av
     Colorfound = False
     ev3.speaker.say("Checking color")
@@ -126,17 +119,6 @@ def check_color(): # i check_color så begränsas elbow så att färgen kan läs
 
             Colorfound = True
     return measuredcolor
-
-  
-
-
-# elbow_down()
-# close_grip()
-# check_color()
-# elbow_down()
-# open_grip()
-# elbow_up()
-
 
 
 def checking_angles(): # denna behöver man inte kalla på eftersom den tillkallas i nästa funktion
@@ -168,13 +150,6 @@ def checking_if_present(pos):
        elbow_up()
 
 
-
-
-# go_to_base_position()
-# checking_if_present(90)
-
-
-
 def startup(): # används i elevated
     ev3.speaker.say("Start")
     go_to_position(30)
@@ -195,10 +170,7 @@ def dropoff(position, color, dropcolorspecial): # byt ut 0,1,2,3
             position = positions[2]
         if color == Color.YELLOW:
             position = positions[3]
-go_to_position(position)
-elbow_down()
-open_grip()
-elbow_up()
+
 
 def elevated_pickup(pos, elevation):
     checkcolor=False
@@ -231,5 +203,55 @@ def elevated_dropoff(pos, elevation):
 
 
 
-elevated_pickup(90,10)
-elevated_dropoff(180, 0)
+
+
+
+def run():
+    #checkcolor if False does not check color, if true does check color
+    checkcolor=False
+    dropcolorspecial=False
+    checkangle=False
+    startup()
+    mycolor = pickup(positions[3], checkcolor)
+    if checkangle == True:
+        isblock = check_angle()
+        if isblock == False:
+            ev3.speaker.say("There is no FUCKING block")
+            finished()
+            return
+    dropoff(positions[0], mycolor, dropcolorspecial)
+    finished()
+   
+
+def menu():
+    MENUOPT = """What do you want to do?
+    (1) Pick a pick up position 
+    (2) Pick a drop off
+    (3) Close"""
+    print(MENUOPT)
+    user_choice = input("Your choice: ")
+    return user_choice
+
+def run_until_block():
+    checkcolor=False
+    dropcolorspecial=False
+    checkangle=True
+    mycolor = []
+    startup()
+    check_if_present(positions[2])
+    dropoff(positions[0], mycolor, dropcolorspecial)
+    finished()
+
+
+
+def runtest():
+    checkcolor=False
+    dropcolorspecial=False
+    checkangle=False
+    startup()
+
+    mycolor = pickup(positions[3], checkcolor)
+
+    elevated_dropoff(positions[2], 0)
+
+
