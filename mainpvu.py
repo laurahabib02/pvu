@@ -7,11 +7,8 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-RIGHT = 0
-MIDDLE = 90
-LEFT = 140
-LEFT_LEFT = 180
-positions = [LEFT_LEFT, LEFT, MIDDLE, RIGHT]
+
+positions = [180, 140, 90, 0]
 colors = [Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN]
 
 def variables():
@@ -147,11 +144,9 @@ def checking_if_present(pos):
        present = checking_angles()
        elbow_up()
 
-def pick_up(pos,cc):
+def pick_up(pos, cc):  # går till angiven position och tar upp klossen och läser av färgen, anta att cc är true, avlutas nere med closed grip
     ev3.screen.print("PICK UP")
-
     pickup_position(pos) 
-
     open_grip()
     elbow_down()
     close_grip()
@@ -164,7 +159,7 @@ def pick_up(pos,cc):
 
 def startup(): # används i elevated
     ev3.speaker.say("Start")
-    go_to_position(30)
+    # go_to_position(30)
     go_to_base_position()
 
 
@@ -172,16 +167,16 @@ def finished():  # används i elevated
     go_to_start_position()
     ev3.speaker.say("Finish")
 
-def dropoff(position, color, dropcolorspecial): 
+def dropoff(positions, color, dropcolorspecial): # ger positionen baserat på färgen
    if dropcolorspecial == True:    
         if color == Color.BLUE:
-            position = positions[0]
+            positions = positions[0]
         if color == Color.RED:
-            position = positions[1]
+            positions = positions[1]
         if color == Color.GREEN:
-            position = positions[2]
+            positions = positions[2]
         if color == Color.YELLOW:
-            position = positions[3]
+            positions = positions[3]
 
 
 def elevated_pickup(pos, elevation):
@@ -197,9 +192,13 @@ def elevated_pickup(pos, elevation):
     elbow_motor.run_target(50, elevation)
     wait(2000)
     close_grip()
-    elbow_up()
-    dropoff(positions[0], mycolor, dropcolorspecial)
+    elbow_down()
+    check_color()
+    dropoff(90,Color.YELLOW,True)
+    # dropoff(positions[0], mycolor, dropcolorspecial)
     finished()
+
+    
 
 def elevated_dropoff(pos, elevation):
     checkcolor=False
@@ -213,37 +212,29 @@ def elevated_dropoff(pos, elevation):
     open_grip()
     finished()
 
-
-
-
-
-
-def run():
-    #checkcolor if False does not check color, if true does check color
-    checkcolor=False
+def run(): # denna funktionen går till start, sedan avläser färg på blocken där, sedan bestämmer drop off position
+    checkcolor=False # blir true om det finns ett block
     dropcolorspecial=False
     checkangle=False
-    startup()
-    mycolor = pick_up(positions[3], checkcolor)
-    if checkangle == True:
-        isblock = checking_angles()
+    startup() # går till startpositionen
+    mycolor = pick_up(positions[3], checkcolor) # lägger mycolor till vad den avläser att blocken har för färg, den går först till positionen, öppnar, ner, stänger, kollar färg och piper
+    if checkangle == True: 
+        isblock = checking_angles() # isblock blir antingen true or false baserat på om den håller ett block
         if isblock == False:
-            ev3.speaker.say("There is no block")
+            ev3.speaker.say("There is no block") # om den inte håller något så körs finish funktionen, dvs den går till start position och säger finish
             finished()
             return
-    dropoff(positions[0], mycolor, dropcolorspecial)
-    finished()
+    dropoff(positions[0], mycolor, dropcolorspecial) # om det finns ett block så körs drop off, dvs positionen för drop off bestäms baserat på färg
+    finished() # borde denna tas bort?
    
-
-
 
 def run_until_block():
     checkcolor=False
     dropcolorspecial=False
     checkangle=True
-    mycolor = []
-    startup()
-    checking_if_present(positions[2])
+    mycolor = [] # bestäms i run funktionen
+    startup() # den går till start positionen, borde redan vara här
+    checking_if_present(positions[2]) 
     dropoff(positions[0], mycolor, dropcolorspecial)
     finished()
 
@@ -269,19 +260,15 @@ def menu():
     choice = input("Enter your choice: ")
     return choice
 
-while True:
-    choice = menu()
 
-    if choice == 1:
-        print("You selected Option 1.")
-        # Place your code for Option 1 here
-    elif choice == 2:
-        print("You selected Option 2.")
-        # Place your code for Option 2 here
-    elif choice == 3:
-        print("Exiting menu")
-        # Place your code for Option 3 here
-        break
-    else:
-        print("Invalid choice. Please enter a valid option.")
 
+# pick_up funktionen
+# elbow_up()
+# go_to_base_position()
+# pick_up(90, True)
+
+# finished funktionen
+# positions = positions[2]
+# finished()
+
+elevated_pickup(90,10)
