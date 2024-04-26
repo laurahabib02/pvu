@@ -51,8 +51,6 @@ def elbow_down():
 # Steg 4: Hitta positionerna, base motor
 
 def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig till detta
-    open_grip()
-    elbow_up()
     base_motor.run(-60)
     while not touch_sensor.pressed():
         pass
@@ -65,7 +63,7 @@ def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig
         wait(100)
 
 
-def go_to_start_position(): # går och pick upp från positionen vi anger som position
+def go_to_start_position(): # går och pick upp från positionen vi anger som position, start position avser positionen den ska till och inte base
     elbow_up()
     go_to_position(position) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
     elbow_down()
@@ -83,9 +81,9 @@ def pickup_position(pos): # lite oklart
 
 
 
-RIGHT = 45
+RIGHT = 0
 MIDDLE = 90
-LEFT = 135
+LEFT = 140
 LEFT_LEFT = 180
 
 # position = RIGHT
@@ -130,7 +128,7 @@ def check_color(): # i check_color så begränsas elbow så att färgen kan läs
 
 
 
-def check_angle(): # denna behöver man inte kalla på eftersom den tillkallas i nästa funktion
+def checking_angles(): # denna behöver man inte kalla på eftersom den tillkallas i nästa funktion
    present = False
    angle=(gripper_motor.angle())
    ev3.screen.print(str(angle))
@@ -148,18 +146,79 @@ def check_angle(): # denna behöver man inte kalla på eftersom den tillkallas i
    return present
 
 
-def check_if_present(pos):
+def checking_if_present(pos):
    present = False   # kan man ändra isblock till något annat
    pickup_position(pos)
    while present == False:
        open_grip()
        elbow_down()
        close_grip()
-       present = check_angle()
+       present = checking_angles()
        elbow_up()
 
 
 
 
-go_to_base_position()
-check_if_present(90)
+# go_to_base_position()
+# checking_if_present(90)
+
+position = 0
+
+def startup(): # används i elevated
+    ev3.speaker.say("Start")
+    go_to_position(30)
+    go_to_base_position()
+
+
+def finished():  # används i elevated
+    go_to_start_position()
+    ev3.speaker.say("Finish")
+
+def dropoff(position, color, dropcolorspecial): # byt ut 0,1,2,3
+   if dropcolorspecial == True:    
+        if color == Color.BLUE:
+            position = positions[0]
+        if color == Color.RED:
+            position = positions[1]
+        if color == Color.GREEN:
+            position = positions[2]
+        if color == Color.YELLOW:
+            position = positions[3]
+go_to_position(position)
+elbow_down()
+open_grip()
+elbow_up()
+
+def elevated_pickup(pos, elevation):
+    checkcolor=False
+    dropcolorspecial=False
+    checkangle=True
+    mycolor = []
+
+    startup() 
+    pickup_position(pos)
+    open_grip()
+    elbow_up()
+    elbow_motor.run_target(50, elevation)
+    wait(2000)
+    close_grip()
+    elbow_up()
+    dropoff(positions[0], mycolor, dropcolorspecial)
+    finished()
+
+def elevated_dropoff(pos, elevation):
+    checkcolor=False
+    dropcolorspecial=False
+    checkangle=True
+    mycolor = []
+
+    go_to_position(pos)
+    elbow_up()
+    elbow_motor.run_target(50, elevation)
+    open_grip()
+    finished()
+
+
+
+elevated_pickup(90,10)
+elevated_dropoff(180, 0)
