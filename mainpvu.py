@@ -184,7 +184,7 @@ def elevated_pickup(pos, elevation):
     dropcolorspecial=False
     checkangle=True
     mycolor = []
-
+   
     startup() 
     pickup_position(pos)
     open_grip()
@@ -194,8 +194,7 @@ def elevated_pickup(pos, elevation):
     close_grip()
     elbow_down()
     check_color()
-    dropoff(90,Color.YELLOW,True)
-    # dropoff(positions[0], mycolor, dropcolorspecial)
+    dropoff(positions[0], mycolor, dropcolorspecial) # något går fel här
     finished()
 
     
@@ -212,53 +211,7 @@ def elevated_dropoff(pos, elevation):
     open_grip()
     finished()
 
-def run(): # denna funktionen går till start, sedan avläser färg på blocken där, sedan bestämmer drop off position
-    checkcolor=False # blir true om det finns ett block
-    dropcolorspecial=False
-    checkangle=False
-    startup() # går till startpositionen
-    mycolor = pick_up(positions[3], checkcolor) # lägger mycolor till vad den avläser att blocken har för färg, den går först till positionen, öppnar, ner, stänger, kollar färg och piper
-    if checkangle == True: 
-        isblock = checking_angles() # isblock blir antingen true or false baserat på om den håller ett block
-        if isblock == False:
-            ev3.speaker.say("There is no block") # om den inte håller något så körs finish funktionen, dvs den går till start position och säger finish
-            finished()
-            return
-    dropoff(positions[0], mycolor, dropcolorspecial) # om det finns ett block så körs drop off, dvs positionen för drop off bestäms baserat på färg
-    finished() # borde denna tas bort?
-   
 
-def run_until_block():
-    checkcolor=False
-    dropcolorspecial=False
-    checkangle=True
-    mycolor = [] # bestäms i run funktionen
-    startup() # den går till start positionen, borde redan vara här
-    checking_if_present(positions[2]) 
-    dropoff(positions[0], mycolor, dropcolorspecial)
-    finished()
-
-
-
-def runtest():
-    checkcolor=False
-    dropcolorspecial=False
-    checkangle=False
-    startup()
-
-    mycolor = pick_up(positions[3], checkcolor)
-
-    elevated_dropoff(positions[2], 0)
-
-
-
-def menu():
-    print("Welcome to the Menu:")
-    print("1. Pick a pickup position")
-    print("2. pick a drop off position")
-    print("3. Exit")
-    choice = input("Enter your choice: ")
-    return choice
 
 
 
@@ -271,4 +224,4 @@ def menu():
 # positions = positions[2]
 # finished()
 
-elevated_pickup(90,10)
+elevated_dropoff(90,10)
