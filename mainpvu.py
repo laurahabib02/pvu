@@ -7,6 +7,21 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
+RIGHT = 0
+MIDDLE = 90
+LEFT = 140
+LEFT_LEFT = 180
+positions = [LEFT_LEFT, LEFT, MIDDLE, RIGHT]
+colors = [Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN]
+
+def variables():
+    checkcolor=False
+    dropcolorspecial=False
+    checkangle=True
+    mycolor = []
+    
+elbow_motor.control.limits(speed=120, acceleration=120)
+base_motor.control.limits(speed=120, acceleration=120)
 
 # Steg 1: Definiera alla motorer, sensorer och färger
 
@@ -81,10 +96,6 @@ def pickup_position(pos): # lite oklart
 
 
 
-RIGHT = 0
-MIDDLE = 90
-LEFT = 140
-LEFT_LEFT = 180
 
 # position = RIGHT
 # go_to_base_position()
@@ -162,7 +173,7 @@ def checking_if_present(pos):
 # go_to_base_position()
 # checking_if_present(90)
 
-position = 0
+
 
 def startup(): # används i elevated
     ev3.speaker.say("Start")
