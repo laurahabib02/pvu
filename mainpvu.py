@@ -172,7 +172,7 @@ def finished():  # används i elevated
     go_to_start_position()
     ev3.speaker.say("Finish")
 
-def dropoff(position, color, dropcolorspecial): # byt ut 0,1,2,3
+def dropoff(position, color, dropcolorspecial): 
    if dropcolorspecial == True:    
         if color == Color.BLUE:
             position = positions[0]
@@ -260,49 +260,28 @@ def runtest():
     elevated_dropoff(positions[2], 0)
 
 
-# def menu():
-#     print("Welcome to the Menu:")
-#     print("1. Pick a pick up position")
-#     print("2. Pick a drop off")
-#     print("3. Exit")
-#     return input("Enter your choice: ")
-
-# while True:
-#     choice = menu()
-#     if choice == "1":
-#         run()
-#     elif choice == "2":
-#         runtest()
-#     elif choice == "3":
-#         break
-#     else:
-#         print("Invalid choice. Please select again.")
 
 def menu():
-    while True:  # This loop keeps the menu running until the user chooses to exit.
-        print("""
-        What do you want to do?
-        (1) Start pickup and dropoff sequence
-        (2) Run test sequence
-        (3) Run until a block is found
-        (4) Exit
-        """)
-        try:
-            user_choice = int(input("Your choice: "))  # Get user input and convert to integer.
+    print("Welcome to the Menu:")
+    print("1. Pick a pickup position")
+    print("2. pick a drop off position")
+    print("3. Exit")
+    choice = input("Enter your choice: ")
+    return choice
 
-            if user_choice == 1:
-                run()  # Start the main pickup and dropoff sequence.
-            elif user_choice == 2:
-                runtest()  # Run a test sequence.
-            elif user_choice == 3:
-                run_until_block()  # Continue until a block is detected.
-            elif user_choice == 4:
-                print("Exiting program.")
-                break  # Exit the loop, thus ending the program.
-            else:
-                print("Invalid option, please try again.")
-        except ValueError:
-            print("Please enter a valid number.")
+while True:
+    choice = menu()
 
-# Call the menu function to start the menu.
-menu()
+    if choice == 1:
+        print("You selected Option 1.")
+        # Place your code for Option 1 here
+    elif choice == 2:
+        print("You selected Option 2.")
+        # Place your code for Option 2 here
+    elif choice == 3:
+        print("Exiting menu")
+        # Place your code for Option 3 here
+        break
+    else:
+        print("Invalid choice. Please enter a valid option.")
+
