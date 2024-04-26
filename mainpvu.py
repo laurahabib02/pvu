@@ -20,8 +20,6 @@ def variables():
     checkangle=True
     mycolor = []
 
-
-
 # Steg 1: Definiera alla motorer, sensorer och färger
 
 ev3 = EV3Brick()
@@ -82,7 +80,7 @@ def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig
 
 def go_to_start_position(): # går och pick upp från positionen vi anger som position, start position avser positionen den ska till och inte base
     elbow_up()
-    go_to_position(position) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
+    go_to_position(positions) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
     elbow_down()
     close_grip()
 
@@ -237,14 +235,7 @@ def run():
     finished()
    
 
-def menu():
-    MENUOPT = """What do you want to do?
-    (1) Pick a pick up position 
-    (2) Pick a drop off
-    (3) Close"""
-    print(MENUOPT)
-    user_choice = input("Your choice: ")
-    return user_choice
+
 
 def run_until_block():
     checkcolor=False
@@ -269,3 +260,49 @@ def runtest():
     elevated_dropoff(positions[2], 0)
 
 
+# def menu():
+#     print("Welcome to the Menu:")
+#     print("1. Pick a pick up position")
+#     print("2. Pick a drop off")
+#     print("3. Exit")
+#     return input("Enter your choice: ")
+
+# while True:
+#     choice = menu()
+#     if choice == "1":
+#         run()
+#     elif choice == "2":
+#         runtest()
+#     elif choice == "3":
+#         break
+#     else:
+#         print("Invalid choice. Please select again.")
+
+def menu():
+    while True:  # This loop keeps the menu running until the user chooses to exit.
+        print("""
+        What do you want to do?
+        (1) Start pickup and dropoff sequence
+        (2) Run test sequence
+        (3) Run until a block is found
+        (4) Exit
+        """)
+        try:
+            user_choice = int(input("Your choice: "))  # Get user input and convert to integer.
+
+            if user_choice == 1:
+                run()  # Start the main pickup and dropoff sequence.
+            elif user_choice == 2:
+                runtest()  # Run a test sequence.
+            elif user_choice == 3:
+                run_until_block()  # Continue until a block is detected.
+            elif user_choice == 4:
+                print("Exiting program.")
+                break  # Exit the loop, thus ending the program.
+            else:
+                print("Invalid option, please try again.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+# Call the menu function to start the menu.
+menu()
