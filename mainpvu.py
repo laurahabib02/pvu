@@ -166,16 +166,17 @@ def finished():  # används i elevated
     go_to_start_position()
     ev3.speaker.say("Finish")
 
-def dropoff(positions, color, dropcolorspecial): # ger positionen baserat på färgen
+def dropoff(position, color, dropcolorspecial): # ger positionen baserat på färgen
    if dropcolorspecial == True:    
         if color == Color.BLUE:
-            positions = positions[0]
+            position = positions[0]  # Uppdatera variabeln position istället för positions
         if color == Color.RED:
-            positions = positions[1]
+            position = positions[1]
         if color == Color.GREEN:
-            positions = positions[2]
+            position = positions[2]
         if color == Color.YELLOW:
-            positions = positions[3]
+            position = positions[3]
+
 
 
 def elevated_pickup(pos, elevation):
@@ -233,15 +234,14 @@ def menu():
 
 # menu()
 
+go_to_base_position()
 
-def menu():
-    MENU_TEXT = """What do you want to do?
-    (1) Pick up block
-    (2) Drop off block
-    (3) Quit"""
-    print(MENU_TEXT)
-    user_choice = input("Your choice: ")
-    return user_choice
+def dropoff_auto(pos):
+    color = check_color()
+    if color is None:
+        print("No color detected. Please pick up a block first.")
+    else:
+        dropoff(positions[pos], color, True)
 
 def main():
     while True:
@@ -250,14 +250,14 @@ def main():
             # Pick up block
             pos_pickup = int(input("Enter pick-up position (0-3): "))
             color = pick_up(positions[pos_pickup], True)
-            wait(2000)  # Wait for a moment
+            wait(2000)  # Vänta ett ögonblick
         elif choice == '2':
-            # Drop off block
+            # Drop off block till en angiven position baserat på färgen som avlästs
             pos_dropoff = int(input("Enter drop-off position (0-3): "))
-            dropoff(positions[pos_dropoff], color, True)
-            wait(2000)  # Wait for a moment
+            dropoff_auto(pos_dropoff)
+            wait(2000)  # Vänta ett ögonblick
         elif choice == '3':
-            # Quit
+            # Avsluta
             print("Exiting...")
             break
         else:
@@ -265,6 +265,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
 
 
 
