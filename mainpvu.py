@@ -211,13 +211,7 @@ def elevated_dropoff(pos, elevation):
     open_grip()
     finished()
 
-def menu():
-   print("Welcome to the Menu:")
-   print("1. Pick a pickup position")
-   print("2. pick a drop off position")
-   print("3. Exit")
-   choice = input("Enter your choice: ")
-   return choice
+
 
 
 # pick_up funktionen, piper i början sedan till 90 grader, stänger klon och försöker identifiera färg
@@ -234,34 +228,56 @@ def menu():
 
 # menu()
 
-go_to_base_position()
-
-def dropoff_auto(pos):
-    color = check_color()
-    if color is None:
-        print("No color detected. Please pick up a block first.")
-    else:
-        dropoff(positions[pos], color, True)
+def menu():
+    print("Main Menu:")
+    print("1. Pick up a block and return to start position")
+    print("2. Pick up a block, read color, and drop off at color-based position")
+    print("3. Exit")
+    return input("Enter your choice: ")
 
 def main():
     while True:
         choice = menu()
         if choice == '1':
-            # Pick up block
-            pos_pickup = int(input("Enter pick-up position (0-3): "))
-            color = pick_up(positions[pos_pickup], True)
-            wait(2000)  # Vänta ett ögonblick
+            pick_up_and_return()
         elif choice == '2':
-            # Drop off block till en angiven position baserat på färgen som avlästs
-            pos_dropoff = int(input("Enter drop-off position (0-3): "))
-            dropoff_auto(pos_dropoff)
-            wait(2000)  # Vänta ett ögonblick
+            pick_up_and_drop_off()
         elif choice == '3':
-            # Avsluta
             print("Exiting...")
             break
         else:
             print("Invalid choice. Please try again.")
+
+def pick_up_and_return():
+    pos_pickup = int(input("Enter pick-up position (0-3): "))
+    pick_up(positions[pos_pickup], True)
+    wait(2000)  # Wait for a moment
+    finished()
+
+def pick_up_and_drop_off():
+    pos_pickup = int(input("Enter pick-up position (0-3): "))
+    color = pick_up(positions[pos_pickup], True)
+    wait(2000)  # Wait for a moment
+    dropoff_auto(color)
+    wait(2000)  # Wait for a moment
+    finished()
+
+def dropoff_auto(color):
+    pos_dropoff = determine_dropoff_position(color)
+    dropoff(positions[pos_dropoff], color, True)
+
+def determine_dropoff_position(color):
+    if color == Color.BLUE:
+        return 0
+    elif color == Color.RED:
+        return 1
+    elif color == Color.GREEN:
+        return 2
+    elif color == Color.YELLOW:
+        return 3
+    else:
+        # Default position if color is not recognized
+        return 0
 
 if __name__ == "__main__":
     main()
