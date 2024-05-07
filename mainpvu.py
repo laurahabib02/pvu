@@ -230,15 +230,28 @@ def elevated_dropoff(pos, elevation):
 # startup()
 
 # menu()
-
 go_to_base_position()
+def drop_off(color):
+    if color == Color.BLUE:
+        go_to_position(180)
+    elif color == Color.RED:
+        go_to_position(140)
+    elif color == Color.GREEN:
+        go_to_position(90)
+    elif color == Color.YELLOW:
+        go_to_position(0)
+    elbow_down()  # Sänk armen innan du släpper av
+    open_grip()
+    elbow_up()
 
-def menu():
-    print("Main Menu:")
-    print("1. Pick up a block and return to start position")
-    print("2. Pick up a block, read color, and drop off at color-based position")
-    print("3. Exit")
-    return input("Enter your choice: ")
+if input == 0:
+        posi = 45
+    elif input == 1:
+        posi = 90
+    elif input == 2:
+        posi = 140
+    elif input == 3:
+        posi = 180
 
 def main():
     while True:
@@ -246,82 +259,60 @@ def main():
         if choice == '1':
             pick_up_and_return()
         elif choice == '2':
-            pick_up_and_drop_off()
+            pick_up_and_drop_off()  # Korrekt val för att plocka upp och släppa av
         elif choice == '3':
             print("Exiting...")
             break
         else:
             print("Invalid choice. Please try again.")
 
+
+# Plocka upp klossen från den angivna positionen och återvänd till baspositionen
 def pick_up_and_return():
     pos_pickup = int(input("Enter pick-up position (0-3): "))
-    pick_up(pos_pickup, False)  # Använd False för att inte avläsa färg
+    pick_up(pos_pickup)
     wait(2000)  # Vänta en stund
     go_to_base_position()
 
-def drop_off(color):
-    # Bestäm målpositionen baserat på färgen
-    if color == Color.BLUE:
-        target_position = 90
-    elif color == Color.RED:
-        target_position = 140
-    elif color == Color.YELLOW:
-        target_position = 180
-    elif color == Color.GREEN:
-        target_position = 0
 
-    # Gå till målpositionen och släpp av klossen
-    go_to_position(target_position)
-    open_grip()
 
+# Plocka upp klossen från den angivna positionen, läs av färgen och släpp av den vid en fördefinierad position
 def pick_up_and_drop_off():
-    pos_pickup = int(input("Enter pick-up position (0-3): "))
-    color = pick_up(pos_pickup, True)
+    input = int(input("Enter pick-up position (0-3): "))
+    color = pick_up(posi, True)  # Använd den angivna positionen för att plocka upp klossen
     wait(2000)  # Vänta en stund
-    drop_off(color)
+    drop_off(color)  # Släpp av klossen på rätt position
     wait(2000)  # Vänta en stund
+    go_to_base_position()  # Återgå till baspositionen efter att klossen har släppts av
+
+
+
+# Återgå till baspositionen
+def finished():
     go_to_base_position()  # Återgå till baspositionen
+    ev3.speaker.say("Finish")  # Meddela att programmet är klart
+    menu()  # Visa huvudmenyn igen
 
-
-
-blue_dropoff_position = 180
-red_dropoff_position = 90
-yellow_dropoff_position = 0
-green_dropoff_position = -90
-
-def determine_dropoff_position(color):
-    if color == Color.BLUE:
-        return blue_dropoff_position
-    elif color == Color.RED:
-        return red_dropoff_position
-    elif color == Color.YELLOW:
-        return yellow_dropoff_position
-    elif color == Color.GREEN:
-        return green_dropoff_position
-
-
-def dropoff_auto(color):
-    pos_dropoff = determine_dropoff_position(color)
-    dropoff(pos_dropoff, color, True)
-
-def determine_dropoff_position(color):
-    if color == Color.BLUE:
-        return 0
-    elif color == Color.RED:
-        return 1
-    elif color == Color.GREEN:
-        return 2
-    elif color == Color.YELLOW:
-        return 3
-    else:
-        # Default position if color is not recognized
-        return 0
+# Visa huvudmenyn och ta emot användarens val
+def menu():
+    print("\nMain Menu:")
+    print("1. Pick up and return")
+    print("2. Pick up and drop off")
+    print("3. Exit")
+    return input("Enter your choice: ")
 
 if __name__ == "__main__":
     main()
 
 
-
+if input == 0:
+        posi = 45
+    elif input == 1:
+        posi = 90
+    elif input == 2:
+        posi = 140
+    elif input == 3:
+        posi = 180
 
 
 
