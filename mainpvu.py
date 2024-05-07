@@ -75,11 +75,14 @@ def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig
         wait(100)
 
 
-def go_to_start_position(): # går och pick upp från positionen vi anger som position, start position avser positionen den ska till och inte base
+def go_to_start_position():
+    pos = int(input("Enter start position (0-3): "))  # Läs in startpositionen från användaren
+    position = positions[pos]  # Hämta positionen från listan baserat på användarens val
     elbow_up()
-    go_to_position(positions) # anger graderna åt vänster från base position, position måste definieras utanför samt innan funktionerna tillkallas
+    go_to_position(position)
     elbow_down()
     close_grip()
+
 
 
 def go_to_position(pos): # tillkallas i andra funktioner
@@ -228,6 +231,8 @@ def elevated_dropoff(pos, elevation):
 
 # menu()
 
+go_to_base_position()
+
 def menu():
     print("Main Menu:")
     print("1. Pick up a block and return to start position")
@@ -250,21 +255,54 @@ def main():
 
 def pick_up_and_return():
     pos_pickup = int(input("Enter pick-up position (0-3): "))
-    pick_up(positions[pos_pickup], True)
-    wait(2000)  # Wait for a moment
-    finished()
+    pick_up(pos_pickup, False)  # Använd False för att inte avläsa färg
+    wait(2000)  # Vänta en stund
+    go_to_base_position()
+
+def drop_off(color):
+    # Bestäm målpositionen baserat på färgen
+    if color == Color.BLUE:
+        target_position = 90
+    elif color == Color.RED:
+        target_position = 140
+    elif color == Color.YELLOW:
+        target_position = 180
+    elif color == Color.GREEN:
+        target_position = 0
+
+    # Gå till målpositionen och släpp av klossen
+    go_to_position(target_position)
+    open_grip()
 
 def pick_up_and_drop_off():
     pos_pickup = int(input("Enter pick-up position (0-3): "))
-    color = pick_up(positions[pos_pickup], True)
-    wait(2000)  # Wait for a moment
-    dropoff_auto(color)
-    wait(2000)  # Wait for a moment
-    finished()
+    color = pick_up(pos_pickup, True)
+    wait(2000)  # Vänta en stund
+    drop_off(color)
+    wait(2000)  # Vänta en stund
+    go_to_base_position()  # Återgå till baspositionen
+
+
+
+blue_dropoff_position = 180
+red_dropoff_position = 90
+yellow_dropoff_position = 0
+green_dropoff_position = -90
+
+def determine_dropoff_position(color):
+    if color == Color.BLUE:
+        return blue_dropoff_position
+    elif color == Color.RED:
+        return red_dropoff_position
+    elif color == Color.YELLOW:
+        return yellow_dropoff_position
+    elif color == Color.GREEN:
+        return green_dropoff_position
+
 
 def dropoff_auto(color):
     pos_dropoff = determine_dropoff_position(color)
-    dropoff(positions[pos_dropoff], color, True)
+    dropoff(pos_dropoff, color, True)
 
 def determine_dropoff_position(color):
     if color == Color.BLUE:
@@ -281,6 +319,7 @@ def determine_dropoff_position(color):
 
 if __name__ == "__main__":
     main()
+
 
 
 
