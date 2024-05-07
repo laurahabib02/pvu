@@ -159,7 +159,6 @@ def pick_up(pos, cc):  # går till angiven position och tar upp klossen och läs
 
 def startup(): # används i elevated
     ev3.speaker.say("Start")
-    # go_to_position(30)
     go_to_base_position()
 
 
@@ -180,9 +179,9 @@ def dropoff(positions, color, dropcolorspecial): # ger positionen baserat på f�
 
 
 def elevated_pickup(pos, elevation):
-    checkcolor=False
-    dropcolorspecial=False
-    checkangle=True
+    checkcolor = False
+    dropcolor = False
+    checkangle = True
     mycolor = []
    
     startup() 
@@ -194,34 +193,78 @@ def elevated_pickup(pos, elevation):
     close_grip()
     elbow_down()
     check_color()
-    dropoff(positions[0], mycolor, dropcolorspecial) # något går fel här
+    dropoff(positions[0], mycolor, dropcolor) # något går fel här
     finished()
 
     
 
 def elevated_dropoff(pos, elevation):
-    checkcolor=False
-    dropcolorspecial=False
-    checkangle=True
+    checkcolor = False
+    dropcolor = False
+    checkangle = True
     mycolor = []
 
-    go_to_position(pos)
+    go_to_position(90)
     elbow_up()
     elbow_motor.run_target(50, elevation)
     open_grip()
     finished()
 
+def menu():
+   print("Welcome to the Menu:")
+   print("1. Pick a pickup position")
+   print("2. pick a drop off position")
+   print("3. Exit")
+   choice = input("Enter your choice: ")
+   return choice
 
 
-
-
-# pick_up funktionen
+# pick_up funktionen, piper i början sedan till 90 grader, stänger klon och försöker identifiera färg
 # elbow_up()
 # go_to_base_position()
-# pick_up(90, True)
+# pick_up(180, True)
 
-# finished funktionen
+# finished funktionen, går till angiven position och säger finish, klon stängd
 # positions = positions[2]
 # finished()
 
-elevated_dropoff(90,10)
+# startup, säger start och går till base position
+# startup()
+
+# menu()
+
+
+def menu():
+    MENU_TEXT = """What do you want to do?
+    (1) Pick up block
+    (2) Drop off block
+    (3) Quit"""
+    print(MENU_TEXT)
+    user_choice = input("Your choice: ")
+    return user_choice
+
+def main():
+    while True:
+        choice = menu()
+        if choice == '1':
+            # Pick up block
+            pos_pickup = int(input("Enter pick-up position (0-3): "))
+            color = pick_up(positions[pos_pickup], True)
+            wait(2000)  # Wait for a moment
+        elif choice == '2':
+            # Drop off block
+            pos_dropoff = int(input("Enter drop-off position (0-3): "))
+            dropoff(positions[pos_dropoff], color, True)
+            wait(2000)  # Wait for a moment
+        elif choice == '3':
+            # Quit
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
+
+
+
