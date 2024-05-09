@@ -35,6 +35,26 @@ colors = [Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN]
 elbow_motor.control.limits(speed=120, acceleration=120)
 base_motor.control.limits(speed=120, acceleration=120)
 
+def calibrate_motors_and_sensors():
+    print("Calibrating base motor to initial position...")
+    base_motor.run(-60)
+    while not touch_sensor.pressed():
+        pass
+    base_motor.stop()
+    base_motor.reset_angle(0)
+    print("Base motor is calibrated.")
+
+    print("Calibrating elbow motor...")
+    elbow_motor.run_until_stalled(-50, direction=Direction.COUNTERCLOCKWISE, then=Stop.HOLD, duty_limit=30)
+    elbow_motor.reset_angle(0)
+    print("Elbow motor is calibrated.")
+
+    print("Opening gripper for initial setup...")
+    open_grip()
+
+    print("Calibration complete. Ready for operations.")
+    ev3.speaker.beep()
+
 # Steg 2: Öppna och stänga klon
 
 
@@ -241,19 +261,7 @@ def elevated_dropoff(pos, elevation):
 
 
 
-# pick_up funktionen, piper i början sedan till 90 grader, stänger klon och försöker identifiera färg
-# elbow_up()
-# go_to_base_position()
-# pick_up(180, True)
-
-# finished funktionen, går till angiven position och säger finish, klon stängd
-# positions = positions[2]
-# finished()
-
-# startup, säger start och går till base position
-# startup()
-
-# menu()
+calibrate_motors_and_sensors()
 go_to_base_position()
 def drop_off(color):
     if color == Color.BLUE:
@@ -270,14 +278,12 @@ def drop_off(color):
 
 
 def main():
-
-    calibrate_motors_and_sensors()
     while True:
         choice = menu()
         if choice == '1':
             pick_up_and_return()
         elif choice == '2':
-            pick_up_and_drop_off()  # Korrekt val för att plocka upp och släppa av
+            pick_up_and_drop_off()  
         elif choice == '3':
             print("Exiting...")
             break
@@ -285,7 +291,6 @@ def main():
             print("Invalid choice. Please try again.")
 
 
-# Plocka upp klossen från den angivna positionen och återvänd till baspositionen
 def pick_up_and_return():
     pos_pickup = int(input("Enter pick-up position (0-3): "))
     if pos_pickup == 0:
@@ -296,13 +301,12 @@ def pick_up_and_return():
         pos = 140
     elif pos_pickup == 3:
         pos = 180
-    pick_up(pos, True)  # Anropa pick_up() med båda argumenten
-    wait(2000)  # Vänta en stund
+    pick_up(pos, True) 
+    wait(2000)  
     go_to_base_position()
     open_grip()
 
 
-# Plocka upp klossen från den angivna positionen, läs av färgen och släpp av den vid en fördefinierad position
 def pick_up_and_drop_off():
     input_val = int(input("Enter pick-up position (0-3): "))
     if input_val == 0:
@@ -313,14 +317,14 @@ def pick_up_and_drop_off():
         pos = 140
     elif input_val == 3:
         pos = 180
-    color = pick_up(pos, True)  # Använd den angivna positionen för att plocka upp klossen
-    wait(2000)  # Vänta en stund
-    drop_off(color)  # Släpp av klossen på rätt position
-    wait(2000)  # Vänta en stund
-    go_to_base_position()  # Återgå till baspositionen efter att klossen har släppts av
+    color = pick_up(pos, True)  
+    wait(2000)  
+    drop_off(color) 
+    wait(2000)  
+    go_to_base_position()  
 
 
-# Återgå till baspositionen
+
 def finished():
     go_to_base_position()  # Återgå till baspositionen
     ev3.speaker.say("Finish")  # Meddela att programmet är klart
@@ -346,22 +350,3 @@ if __name__ == "__main__":
     
  
 
-def calibrate_motors_and_sensors():
-    print("Calibrating base motor to initial position...")
-    base_motor.run(-60)
-    while not touch_sensor.pressed():
-        pass
-    base_motor.stop()
-    base_motor.reset_angle(0)
-    print("Base motor is calibrated.")
-
-    print("Calibrating elbow motor...")
-    elbow_motor.run_until_stalled(-50, direction=Direction.COUNTERCLOCKWISE, then=Stop.HOLD, duty_limit=30)
-    elbow_motor.reset_angle(0)
-    print("Elbow motor is calibrated.")
-
-    print("Opening gripper for initial setup...")
-    open_grip()
-
-    print("Calibration complete. Ready for operations.")
-    ev3.speaker.beep()
