@@ -95,6 +95,7 @@ def pickup_position(pos): # lite oklart
     base_motor.run_target(90, pos)
 
 
+
 def check_color(): # i check_color så begränsas elbow så att färgen kan läsas av
     Colorfound = False
     ev3.speaker.say("Checking color")
@@ -244,14 +245,6 @@ def drop_off(color):
     open_grip()
     elbow_up()
 
-if input == 0:
-        posi = 45
-    elif input == 1:
-        posi = 90
-    elif input == 2:
-        posi = 140
-    elif input == 3:
-        posi = 180
 
 def main():
     while True:
@@ -270,21 +263,31 @@ def main():
 # Plocka upp klossen från den angivna positionen och återvänd till baspositionen
 def pick_up_and_return():
     pos_pickup = int(input("Enter pick-up position (0-3): "))
-    pick_up(pos_pickup)
-    wait(2000)  # Vänta en stund
+    if pos_pickup == 0:
+        pos = 45
+    elif pos_pickup == 1:
+        pos = 90
+    elif pos_pickup == 2:
+        pos = 140
+    elif pos_pickup == 3:
+        pos = 180
+    pick_up(pos, True)  # Anropa pick_up() med båda argumenten
+    wait(2000)  # Vänta en stund3
     go_to_base_position()
-
 
 
 # Plocka upp klossen från den angivna positionen, läs av färgen och släpp av den vid en fördefinierad position
 def pick_up_and_drop_off():
-    input = int(input("Enter pick-up position (0-3): "))
-    color = pick_up(posi, True)  # Använd den angivna positionen för att plocka upp klossen
-    wait(2000)  # Vänta en stund
-    drop_off(color)  # Släpp av klossen på rätt position
-    wait(2000)  # Vänta en stund
-    go_to_base_position()  # Återgå till baspositionen efter att klossen har släppts av
-
+    input_val = int(input("Enter pick-up position (0-3): "))
+    if input_val == 0:
+        pos = 45
+    elif input_val == 1:
+        pos = 90
+    elif input_val == 2:
+        pos = 140
+    elif input_val == 3:
+        pos = 180
+    
 
 
 # Återgå till baspositionen
@@ -305,14 +308,7 @@ if __name__ == "__main__":
     main()
 
 
-if input == 0:
-        posi = 45
-    elif input == 1:
-        posi = 90
-    elif input == 2:
-        posi = 140
-    elif input == 3:
-        posi = 180
+
 
 
 
