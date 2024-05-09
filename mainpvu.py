@@ -48,7 +48,6 @@ def open_grip():
     gripper_motor.reset_angle(0) 
     gripper_motor.run_target(200, -90)
 
-
 # Steg 3: Lyfta på armen upp och ner
 
 def elbow_up():
@@ -331,4 +330,7 @@ if __name__ == "__main__":
 
 
 
+
+    
+ 
 
