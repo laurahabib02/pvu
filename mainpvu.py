@@ -43,17 +43,27 @@ def close_grip():
      
 
 
+# def open_grip():
+#     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
+#     gripper_motor.reset_angle(0) 
+#     gripper_motor.run_target(200, -90)
+
 def open_grip():
-    gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
-    gripper_motor.reset_angle(0) 
-    gripper_motor.run_target(200, -90)
+    gripper_motor.run_until_stalled(-200, then=Stop.HOLD, duty_limit=50)
+    gripper_motor.reset_angle(0)
 
 # Steg 3: Lyfta på armen upp och ner
 
+# def elbow_up():
+#     elbow_motor.run_until_stalled(50, then=Stop.HOLD, duty_limit=50)
+#     elbow_motor.reset_angle(90) 
+
 def elbow_up():
     elbow_motor.run_until_stalled(50, then=Stop.HOLD, duty_limit=50)
-    elbow_motor.reset_angle(90) 
+    elbow_motor.reset_angle(90)
 
+# def elbow_down():
+#     elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
 
 def elbow_down():
     elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
@@ -260,6 +270,8 @@ def drop_off(color):
 
 
 def main():
+
+    calibrate_motors_and_sensors()
     while True:
         choice = menu()
         if choice == '1':
@@ -334,3 +346,22 @@ if __name__ == "__main__":
     
  
 
+def calibrate_motors_and_sensors():
+    print("Calibrating base motor to initial position...")
+    base_motor.run(-60)
+    while not touch_sensor.pressed():
+        pass
+    base_motor.stop()
+    base_motor.reset_angle(0)
+    print("Base motor is calibrated.")
+
+    print("Calibrating elbow motor...")
+    elbow_motor.run_until_stalled(-50, direction=Direction.COUNTERCLOCKWISE, then=Stop.HOLD, duty_limit=30)
+    elbow_motor.reset_angle(0)
+    print("Elbow motor is calibrated.")
+
+    print("Opening gripper for initial setup...")
+    open_grip()
+
+    print("Calibration complete. Ready for operations.")
+    ev3.speaker.beep()
