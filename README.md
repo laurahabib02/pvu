@@ -1,12 +1,14 @@
 1. Introduction
-- The customer has a problem with sorting the incoming packages in a warehouse. It is estimated that the delivery of packages poses a risk of injury to workers due to the irregular shapes as well as the
+   - The customer has a problem with sorting the incoming packages in a warehouse. It is estimated that the delivery of packages poses a risk of injury to workers due to the irregular shapes as well as the
 heavy weight of the packages.
-- Our team has been given the task to implement a program to enable robots to handle the sorting of the incoming packages in the warehouse. This by using different attributes such as color to sort the packages
+
+   - Our team has been given the task to implement a program to enable robots to handle the sorting of the incoming packages in the warehouse. This by using different attributes such as color to sort the packages
 into given categories. 
 
 
 
 2. Getting started
+
 To start the project, you need a working computer. On this computer you need to download python and VS code. The next step to be able to use your LEGO MINDSTORM robot is that you need to download the latest version
 of Pybricks. This can be helpful because Pybricks offers, among other things, ready-made functions that can directly control the parts and motors that your robot has. You will also need to install the VSCode extension
 LEGO Mindstorms EV3 MicroPython. Something else that can be recommended is to install GitHub, which is a perfect tool that facilitates group coding.
@@ -14,8 +16,11 @@ LEGO Mindstorms EV3 MicroPython. Something else that can be recommended is to in
 
 Links: 
 VSCode download https://code.visualstudio.com/download 
+
 Github download https://desktop.github.com/ 
+
 Python download https://www.python.org/downloads/ 
+
 Bricks download https://pybricks.com/install/ 
 
 
