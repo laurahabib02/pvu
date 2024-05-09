@@ -44,6 +44,7 @@ def calibrate_motors_and_sensors():
     print("Base motor is calibrated.")
 
     print("Calibrating elbow motor...")
+    # Rättat till: Borttagen direction argument
     elbow_motor.run_until_stalled(-50, then=Stop.HOLD, duty_limit=30)
     elbow_motor.reset_angle(0)
     print("Elbow motor is calibrated.")
@@ -57,12 +58,12 @@ def calibrate_motors_and_sensors():
   
 
 def close_grip():  
-    gripper_motor.run_until_stalled(200,then=Stop.COAST, duty_limit=25) #här
+    gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
      
 
 
 def open_grip():
-    gripper_motor.run_until_stalled(200, then=Stop.COAST, duty_limit=25) #här
+    gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
     gripper_motor.reset_angle(0) 
     gripper_motor.run_target(200, -90)
 
@@ -78,14 +79,15 @@ def open_grip():
 #     elbow_motor.reset_angle(90) 
 
 def elbow_up():
-    elbow_motor.run_until_stalled(50, then=Stop.COAST, duty_limit=25) #här
+    elbow_motor.run_until_stalled(50, then=Stop.HOLD, duty_limit=50)
     elbow_motor.reset_angle(1000)
 
 # def elbow_down():
 #     elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
 
 def elbow_down():
-    elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25) #här
+    elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
+
 
 
 def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig till detta
@@ -172,9 +174,7 @@ def checking_angles():
         go_to_base_position()  # Gå tillbaka till baspositionen om motorn inte håller ett block
         if __name__ == "__main__":
             main()
-  # Visa huvudmenyn igen
         return False
-
 
 def checking_if_present(pos):
    present = False   
@@ -237,7 +237,7 @@ def elevated_pickup(pos, elevation):
     close_grip()
     elbow_down()
     check_color()
-    dropoff(positions[0], mycolor, dropcolor) 
+    dropoff(positions[0], mycolor, dropcolor) # något går fel här
     finished()
 
     
@@ -267,7 +267,7 @@ def drop_off(color):
         go_to_position(90)
     elif color == Color.YELLOW:
         go_to_position(0)
-    elbow_down()  
+    elbow_down()  # Sänk armen innan du släpper av
     open_grip()
     elbow_up()
 
@@ -289,13 +289,13 @@ def main():
 def pick_up_and_return():
     pos_pickup = int(input("Enter pick-up position (0-3): "))
     if pos_pickup == 0:
-        pos = 40
+        pos = 45
     elif pos_pickup == 1:
-        pos = 85
+        pos = 90
     elif pos_pickup == 2:
-        pos = 135
+        pos = 140
     elif pos_pickup == 3:
-        pos = 175
+        pos = 180
     pick_up(pos, True) 
     wait(2000)  
     go_to_base_position()
@@ -305,13 +305,13 @@ def pick_up_and_return():
 def pick_up_and_drop_off():
     input_val = int(input("Enter pick-up position (0-3): "))
     if input_val == 0:
-        pos = 40
+        pos = 45
     elif input_val == 1:
-        pos = 85
+        pos = 90
     elif input_val == 2:
-        pos = 135
+        pos = 140
     elif input_val == 3:
-        pos = 175
+        pos = 180
     color = pick_up(pos, True)  
     wait(2000)  
     drop_off(color) 
@@ -321,11 +321,11 @@ def pick_up_and_drop_off():
 
 
 def finished():
-    go_to_base_position()  
-    ev3.speaker.say("Finish")  
-    menu()  
+    go_to_base_position()  # Återgå till baspositionen
+    ev3.speaker.say("Finish")  # Meddela att programmet är klart
+    menu()  # Visa huvudmenyn igen
 
-
+# Visa huvudmenyn och ta emot användarens val
 def menu():
     print("\nMain Menu:")
     print("1. Pick up and return")
@@ -339,13 +339,3 @@ open_grip()
 go_to_base_position()
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-    
- 
-
