@@ -17,7 +17,6 @@ def variables():
     checkangle=True
     mycolor = []
 
-# Steg 1: Definiera alla motorer, sensorer och färger
 
 ev3 = EV3Brick()
 left_motor = Motor(Port.B)
@@ -45,7 +44,7 @@ def calibrate_motors_and_sensors():
     print("Base motor is calibrated.")
 
     print("Calibrating elbow motor...")
-    elbow_motor.run_until_stalled(-50, direction=Direction.COUNTERCLOCKWISE, then=Stop.HOLD, duty_limit=30)
+    elbow_motor.run_until_stalled(-50, then=Stop.HOLD, duty_limit=30)
     elbow_motor.reset_angle(0)
     print("Elbow motor is calibrated.")
 
@@ -54,42 +53,40 @@ def calibrate_motors_and_sensors():
 
     print("Calibration complete. Ready for operations.")
     ev3.speaker.beep()
-
-# Steg 2: Öppna och stänga klon
-
+    open_grip()
+  
 
 def close_grip():  
-    gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
+    gripper_motor.run_until_stalled(200,then=Stop.COAST, duty_limit=25) #här
      
 
 
-# def open_grip():
-#     gripper_motor.run_until_stalled(200, then=Stop.HOLD, duty_limit=50)
-#     gripper_motor.reset_angle(0) 
-#     gripper_motor.run_target(200, -90)
-
 def open_grip():
-    gripper_motor.run_until_stalled(-200, then=Stop.HOLD, duty_limit=50)
-    gripper_motor.reset_angle(0)
+    gripper_motor.run_until_stalled(200, then=Stop.COAST, duty_limit=25) #här
+    gripper_motor.reset_angle(0) 
+    gripper_motor.run_target(200, -90)
 
-# Steg 3: Lyfta på armen upp och ner
+# def open_grip():
+#     gripper_motor.run_until_stalled(-200, then=Stop.HOLD, duty_limit=50)
+#     gripper_motor.reset_angle(0)
+
+
+
 
 # def elbow_up():
 #     elbow_motor.run_until_stalled(50, then=Stop.HOLD, duty_limit=50)
 #     elbow_motor.reset_angle(90) 
 
 def elbow_up():
-    elbow_motor.run_until_stalled(50, then=Stop.HOLD, duty_limit=50)
-    elbow_motor.reset_angle(90)
+    elbow_motor.run_until_stalled(50, then=Stop.COAST, duty_limit=25) #här
+    elbow_motor.reset_angle(1000)
 
 # def elbow_down():
 #     elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
 
 def elbow_down():
-    elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25)
+    elbow_motor.run_until_stalled(-50, then=Stop.COAST, duty_limit=25) #här
 
-
-# Steg 4: Hitta positionerna, base motor
 
 def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig till detta
     base_motor.run(-60)
@@ -105,36 +102,33 @@ def go_to_base_position(): # hittar utgångsläget, dvs graderna förhåller sig
 
 
 def go_to_start_position():
-    pos = int(input("Enter start position (0-3): "))  # Läs in startpositionen från användaren
-    position = positions[pos]  # Hämta positionen från listan baserat på användarens val
+    pos = int(input("Enter start position (0-3): ")) 
+    position = positions[pos]  
     elbow_up()
     go_to_position(position)
     elbow_down()
     close_grip()
 
-
-
-def go_to_position(pos): # tillkallas i andra funktioner
+def go_to_position(pos): 
     elbow_up()
     base_motor.run_target(60, pos)
 
 
-def pickup_position(pos): # lite oklart
+def pickup_position(pos):
     elbow_up()
     base_motor.run_target(90, pos)
 
 
 
-def check_color(): # i check_color så begränsas elbow så att färgen kan läsas av
+def check_color(): 
     Colorfound = False
     ev3.speaker.say("Checking color")
     elbow_motor.reset_angle(0)
     elbow_motor.run_target(50, 40)
     wait(2000)
 
-    while Colorfound == False: # alla färger funkar sålänge den är nära nog
+    while Colorfound == False: 
         measuredcolor = color_sensor.color()
-
         if measuredcolor in colors:
             if measuredcolor == Color.BLUE:
                 ev3.speaker.say("blue")
@@ -144,7 +138,6 @@ def check_color(): # i check_color så begränsas elbow så att färgen kan läs
                 ev3.speaker.say("green")
             elif measuredcolor == Color.YELLOW:
                 ev3.speaker.say("yellow")
-
             Colorfound = True
     return measuredcolor
 
@@ -177,11 +170,14 @@ def checking_angles():
         ev3.speaker.say("The motor is not holding a block.")
         wait(1000)
         go_to_base_position()  # Gå tillbaka till baspositionen om motorn inte håller ett block
-        menu()  # Visa huvudmenyn igen
+        if __name__ == "__main__":
+            main()
+  # Visa huvudmenyn igen
         return False
 
+
 def checking_if_present(pos):
-   present = False   # kan man ändra isblock till något annat
+   present = False   
    pickup_position(pos)
    while present == False:
        open_grip()
@@ -241,7 +237,7 @@ def elevated_pickup(pos, elevation):
     close_grip()
     elbow_down()
     check_color()
-    dropoff(positions[0], mycolor, dropcolor) # något går fel här
+    dropoff(positions[0], mycolor, dropcolor) 
     finished()
 
     
@@ -261,8 +257,7 @@ def elevated_dropoff(pos, elevation):
 
 
 
-calibrate_motors_and_sensors()
-go_to_base_position()
+
 def drop_off(color):
     if color == Color.BLUE:
         go_to_position(180)
@@ -272,7 +267,7 @@ def drop_off(color):
         go_to_position(90)
     elif color == Color.YELLOW:
         go_to_position(0)
-    elbow_down()  # Sänk armen innan du släpper av
+    elbow_down()  
     open_grip()
     elbow_up()
 
@@ -294,13 +289,13 @@ def main():
 def pick_up_and_return():
     pos_pickup = int(input("Enter pick-up position (0-3): "))
     if pos_pickup == 0:
-        pos = 45
+        pos = 40
     elif pos_pickup == 1:
-        pos = 90
+        pos = 85
     elif pos_pickup == 2:
-        pos = 140
+        pos = 135
     elif pos_pickup == 3:
-        pos = 180
+        pos = 175
     pick_up(pos, True) 
     wait(2000)  
     go_to_base_position()
@@ -310,13 +305,13 @@ def pick_up_and_return():
 def pick_up_and_drop_off():
     input_val = int(input("Enter pick-up position (0-3): "))
     if input_val == 0:
-        pos = 45
+        pos = 40
     elif input_val == 1:
-        pos = 90
+        pos = 85
     elif input_val == 2:
-        pos = 140
+        pos = 135
     elif input_val == 3:
-        pos = 180
+        pos = 175
     color = pick_up(pos, True)  
     wait(2000)  
     drop_off(color) 
@@ -326,11 +321,11 @@ def pick_up_and_drop_off():
 
 
 def finished():
-    go_to_base_position()  # Återgå till baspositionen
-    ev3.speaker.say("Finish")  # Meddela att programmet är klart
-    menu()  # Visa huvudmenyn igen
+    go_to_base_position()  
+    ev3.speaker.say("Finish")  
+    menu()  
 
-# Visa huvudmenyn och ta emot användarens val
+
 def menu():
     print("\nMain Menu:")
     print("1. Pick up and return")
@@ -338,6 +333,10 @@ def menu():
     print("3. Exit")
     return input("Enter your choice: ")
 
+
+calibrate_motors_and_sensors()
+open_grip()
+go_to_base_position()
 if __name__ == "__main__":
     main()
 
