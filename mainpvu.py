@@ -120,23 +120,36 @@ def check_color(): # i check_color så begränsas elbow så att färgen kan läs
     return measuredcolor
 
 
-def checking_angles(): # denna behöver man inte kalla på eftersom den tillkallas i nästa funktion
-   present = False
-   angle=(gripper_motor.angle())
-   ev3.screen.print(str(angle))
+# def checking_angles(): # denna behöver man inte kalla på eftersom den tillkallas i nästa funktion
+#    present = False
+#    angle=(gripper_motor.angle())
+#    ev3.screen.print(str(angle))
 
 
-   if angle<-20:
-       ev3.speaker.say("The motor is holding a block.")
+#    if angle<-20:
+#        ev3.speaker.say("The motor is holding a block.")
 
 
-       present = True
+#        present = True
   
-   else:
-       ev3.speaker.say("The motor is not holding a block.")
-   wait(1000)
-   return present
+#    else:
+#        ev3.speaker.say("The motor is not holding a block.")
+#    wait(1000)
+#    return present
 
+def checking_angles():
+    angle = gripper_motor.angle()  # Hämta vinkeln för grippermotorn
+    ev3.screen.print(str(angle))
+
+    if angle < -20:
+        ev3.speaker.say("The motor is holding a block.")
+        return True
+    else:
+        ev3.speaker.say("The motor is not holding a block.")
+        wait(1000)
+        go_to_base_position()  # Gå tillbaka till baspositionen om motorn inte håller ett block
+        menu()  # Visa huvudmenyn igen
+        return False
 
 def checking_if_present(pos):
    present = False   # kan man ändra isblock till något annat
@@ -154,6 +167,7 @@ def pick_up(pos, cc):  # går till angiven position och tar upp klossen och läs
     open_grip()
     elbow_down()
     close_grip()
+    checking_angles()
     if cc is True:
         color = check_color()
     elbow_up()
@@ -272,8 +286,9 @@ def pick_up_and_return():
     elif pos_pickup == 3:
         pos = 180
     pick_up(pos, True)  # Anropa pick_up() med båda argumenten
-    wait(2000)  # Vänta en stund3
+    wait(2000)  # Vänta en stund
     go_to_base_position()
+    open_grip()
 
 
 # Plocka upp klossen från den angivna positionen, läs av färgen och släpp av den vid en fördefinierad position
@@ -287,7 +302,11 @@ def pick_up_and_drop_off():
         pos = 140
     elif input_val == 3:
         pos = 180
-    
+    color = pick_up(pos, True)  # Använd den angivna positionen för att plocka upp klossen
+    wait(2000)  # Vänta en stund
+    drop_off(color)  # Släpp av klossen på rätt position
+    wait(2000)  # Vänta en stund
+    go_to_base_position()  # Återgå till baspositionen efter att klossen har släppts av
 
 
 # Återgå till baspositionen
